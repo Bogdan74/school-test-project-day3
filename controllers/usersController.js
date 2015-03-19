@@ -17,19 +17,22 @@ app.on('request', function(request, response){
                 request.connection.destroy();
         });
         request.on('end', function () {
-            var post = qs.parse(body);
+			console.log('POST', body);
 			
-			//var tmpObj = JSON.parse(post);
-			console.log(body);
-			console.log(post);
-			
-			//post должна содержать строку-валидную для JSON.parse()
+			//body должна содержать строку-валидную для JSON.parse()
 			// у меня не получилось получить строку, которая бы нормально парсилась
-			// для проверки роботоспособности посылаю временный объект tmpObj
-			var tmpObj = {'name':'John', 'e-mail': 'john@smith.com', 'description': 'admin', 'age': 25};
+			// для проверки роботоспособности посылаю временный объект
 			
-			users.addUser(tmpObj);
-        });
+			body = '{"name":"John", "e-mail": "john@smith.com", "description": "admin", "age": 25}';
+			
+			try{
+				users.addUser(JSON.parse(body));
+			
+			}catch(e){
+				console.log(e.message);
+			}
+			
+		});
     }
 	
 });
